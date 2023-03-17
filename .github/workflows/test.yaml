@@ -22,6 +22,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
+    - name: Set COMMAND_IAC environment variable
+      run: echo "COMMAND_IAC=terraform" >> $GITHUB_ENV
+      
     - name: Terraform Test
       env:
         COMMAND_IAC: terraform
