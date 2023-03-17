@@ -1,6 +1,18 @@
 from pyspark.sql import SparkSession
 import boto3 
 import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config/config.ini")
+
+# Set credentials for AWS Glue
+aws_access_key_id = config.get("aws_creds", "aws_access_key_id")
+aws_secret_access_key = config.get("aws_creds", "aws_secret_access_key")
+bucket_name = "wu1-glue-job"
+job_name = "csv-to-parquet-converter"
+script_path = f"s3://{bucket_name}/glue_scripts/data-process.py"
+
 
 def create_glue_job(job_name, script_path, bucket_name, aws_access_key_id, aws_secret_access_key):
     glue = boto3.client("glue", region_name="us-east-1",
@@ -29,12 +41,6 @@ def create_glue_job(job_name, script_path, bucket_name, aws_access_key_id, aws_s
 
     return job["Name"]
 
-# Replace the values with your actual paths and credentials
-bucket_name = "wu1-glue-job"
-script_path = f"s3://{bucket_name}/glue_scripts/data-process.py"
-aws_access_key_id = "AKIATHTPRMX4PSW55A6O"
-aws_secret_access_key = "IlncVbL3DHFSd+i9k1AQuW6uEcWdWEwWFkE5F/3i"
-job_name = "csv-to-parquet-converter"
 
 create_glue_job(job_name, script_path, bucket_name, aws_access_key_id, aws_secret_access_key)
 

@@ -1,9 +1,24 @@
 import random
+import os
 import pandas as pd
-import boto3
 import psycopg2
-import json
+import configparser
 from datetime import timedelta, datetime
+
+# Get the full path to the config.ini file
+current_dir = os.getcwd()
+config_file_path = os.path.join(current_dir, "config", "config.ini")
+
+config = configparser.ConfigParser()
+config.read(config_file_path)
+
+# RDS Credentials
+host = config.get("RDS", "host")
+port = config.getint("RDS", "port")
+dbname = config.get("RDS", "dbname")
+user = config.get("RDS", "user")
+password = config.get("RDS", "password")
+
 
 def generate_data(num_customers, num_products, num_orders):
     
@@ -70,43 +85,19 @@ def generate_data(num_customers, num_products, num_orders):
 
         global order_items_table  
         order_items_table = pd.DataFrame.from_dict(order_items)  
-        
-        # Print DataFrame
-        print(products_table)
-        print(customers_table)
-        print(orders_table)
-        print(order_items_table)
 
     return ("Succesfully data generated")
 
 
-def create_tables_postgres_and_ingest(rds_instance_identifier = "database-1", secret_arn = "wu1postgree"):
-    
-    # Create RDS client and get instance details
-    region = "us-east-1"
-    rds = boto3.client('rds', region)
-    response = rds.describe_db_instances(DBInstanceIdentifier=rds_instance_identifier)
-    instance = response['DBInstances'][0]
-
-    # Get the RDS endpoint and port
-    host = instance['Endpoint']['Address']
-    port = instance['Endpoint']['Port']
-
-    # Get the RDS database name, username, and password
-    secretsmanager = boto3.client("secretsmanager", region)
-    secret = secretsmanager.get_secret_value(SecretId=secret_arn)
-    secret_dict = json.loads(secret["SecretString"])
-    dbname = secret_dict["engine"]
-    user = secret_dict["username"]
-    password = secret_dict["password"]
+def create_tables_postgres_and_ingest():
 
     # Connect to PostgreSQL RDS using psycopg2
     conn = psycopg2.connect(
-        host=host,
-        port=port,
-        dbname=dbname,
-        user=user,
-        password=password
+        host = host,
+        port = port,
+        dbname = dbname,
+        user = user,
+        password = password
     )
     cur = conn.cursor()
 
@@ -204,7 +195,8 @@ def create_tables_postgres_and_ingest(rds_instance_identifier = "database-1", se
     conn.close
 
 data = generate_data(50, 50, 50)
-ingest_data = create_tables_postgres_and_ingest("database-1", "wu1postgree")
+
+ingest_data = create_tables_postgres_and_ingest()
 
 print("Data ingestion completed successfully!")
 
