@@ -1,0 +1,27 @@
+
+
+============================== 2023-03-16 16:21:55.301478 | e0f1ef91-033f-4197-8557-8b78e60e394d ==============================
+[0m16:21:55.301478 [info ] [MainThread]: Running with dbt=1.4.5
+[0m16:21:55.302244 [debug] [MainThread]: running dbt with arguments {'write_json': True, 'use_colors': True, 'printer_width': 80, 'version_check': True, 'partial_parse': True, 'static_parser': True, 'profiles_dir': '/Users/gomes/.dbt', 'send_anonymous_usage_stats': True, 'quiet': False, 'no_print': False, 'cache_selected_only': False, 'skip_profile_setup': False, 'which': 'init', 'indirect_selection': 'eager'}
+[0m16:21:55.302359 [debug] [MainThread]: Tracking: tracking
+[0m16:21:55.310706 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d5da90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d817c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d99250>]}
+[0m16:22:00.090520 [debug] [MainThread]: Starter project path: /Users/gomes/.pyenv/versions/3.9.16/envs/project1/lib/python3.9/site-packages/dbt/include/starter_project
+[0m16:22:47.400966 [info ] [MainThread]: Profile wu1project written to /Users/gomes/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m16:22:47.403287 [info ] [MainThread]: 
+Your new dbt project "wu1project" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:22:47.404536 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d99250>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d5da90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d5daf0>]}
+[0m16:22:47.405485 [debug] [MainThread]: Flushing usage events

@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: public
+    database: dev
+    schema: public
+    tables:
+      - name: order
+      - name: orderitem
+      - name: product
+      - name: customer
+
+models:
+  - name: denormalized_table
+    description: "A denormalized table created using dbt"
+    columns:
+      - name: order_id
+        description: "The primary key for the orders table"
+        tests:
+          - unique
+          - not_null
+      # Add other columns and tests as needed
