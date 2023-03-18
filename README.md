@@ -17,7 +17,7 @@ This project is a study case of data engineering for Natuzzi, a furniture compan
 11. Finally, the entire pipeline was orchestrated using Apache Airflow, deployed on a Kubernetes cluster.
 
 ### Pipeline Diagram
-![alt text](https://github.com/makima0499/1.Data-Engineer/blob/dev/1.DataPipeline.png)
+![alt text](https://github.com/makima0499/1.Data-Engineer/blob/main/1.DataPipeline.png)
 
 ### Data Engineer Tools
 * Python
