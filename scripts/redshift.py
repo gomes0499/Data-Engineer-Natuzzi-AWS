@@ -9,7 +9,7 @@ current_dir = os.getcwd()
 config_file_path = os.path.join(current_dir, "config", "config.ini")
 
 config = configparser.ConfigParser()
-config.read(config_file_path)
+config.read("/Users/gomes/Desktop/Projects/Data Engineer/1-Project/scripts/config/config.ini")
 
 # AWS Redshift credentials 
 redshift = {
@@ -68,46 +68,63 @@ def create_redshift_tables_from_parquet(schema_name, redshift, aws_creds, s3_buc
 
     # Define SQL commands
     sql_commands = [
-    f"CREATE SCHEMA IF NOT EXISTS {schema_name};",
-    f'''
-        CREATE TABLE IF NOT EXISTS {schema_name}.Customer (
-            CustomerID INT PRIMARY KEY,
-            FirstName VARCHAR(255) NOT NULL,
-            LastName VARCHAR(255) NOT NULL,
-            Email VARCHAR(255) NOT NULL,
-            Phone VARCHAR(20) NOT NULL
-        );
-    ''',
-    f'''
-        CREATE TABLE IF NOT EXISTS {schema_name}.Product (
-            ProductID INT PRIMARY KEY,
-            ProductName VARCHAR(255) NOT NULL,
-            ProductDescription VARCHAR(255) NOT NULL,
-            ProductPrice DECIMAL(10, 2) NOT NULL,
-            ProductInventory INT NOT NULL
-        );
-    ''',
-    f'''
-        CREATE TABLE IF NOT EXISTS {schema_name}."Order" (
-            OrderID INT PRIMARY KEY,
-            CustomerID INT NOT NULL,
-            OrderDate DATE NOT NULL,
-            TotalAmount DECIMAL(10, 2) NOT NULL
-        );
-    ''',
-    f'''
-        CREATE TABLE IF NOT EXISTS {schema_name}.OrderItem (
-            OrderItemID INT PRIMARY KEY,
-            OrderID INT NOT NULL,
-            ProductID INT NOT NULL,
-            Quantity INT NOT NULL,
-            Price DECIMAL(10, 2) NOT NULL
-        );
-    ''',
-    f"ALTER TABLE {schema_name}.\"Order\" ADD FOREIGN KEY (CustomerID) REFERENCES {schema_name}.Customer(CustomerID);",
-    f"ALTER TABLE {schema_name}.OrderItem ADD FOREIGN KEY (OrderID) REFERENCES {schema_name}.\"Order\"(OrderID);",
-    f"ALTER TABLE {schema_name}.OrderItem ADD FOREIGN KEY (ProductID) REFERENCES {schema_name}.Product(ProductID);"
-]
+        f"CREATE SCHEMA IF NOT EXISTS {schema_name};",
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}.Category (
+                CategoryID INT PRIMARY KEY,
+                CategoryName VARCHAR(255) NOT NULL
+            );
+        ''',
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}.City (
+                CityID INT PRIMARY KEY,
+                CityName VARCHAR(255) NOT NULL,
+                State VARCHAR(255) NOT NULL
+            );
+        ''',
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}.Customer (
+                CustomerID INT PRIMARY KEY,
+                CityID INT NOT NULL,
+                FirstName VARCHAR(255) NOT NULL,
+                LastName VARCHAR(255) NOT NULL,
+                Email VARCHAR(255) NOT NULL,
+                Phone VARCHAR(20) NOT NULL,
+                FOREIGN KEY (CityID) REFERENCES {schema_name}.City(CityID)
+            );
+        ''',
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}.Product (
+                ProductID INT PRIMARY KEY,
+                CategoryID INT NOT NULL,
+                ProductName VARCHAR(255) NOT NULL,
+                ProductDescription VARCHAR(255) NOT NULL,
+                ProductPrice DECIMAL(10, 2) NOT NULL,
+                ProductInventory INT NOT NULL,
+                FOREIGN KEY (CategoryID) REFERENCES {schema_name}.Category(CategoryID)
+            );
+        ''',
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}."Order" (
+                OrderID INT PRIMARY KEY,
+                CustomerID INT NOT NULL,
+                OrderDate DATE NOT NULL,
+                TotalAmount DECIMAL(10, 2) NOT NULL,
+                FOREIGN KEY (CustomerID) REFERENCES {schema_name}.Customer(CustomerID)
+            );
+        ''',
+        f'''
+            CREATE TABLE IF NOT EXISTS {schema_name}.OrderItem (
+                OrderItemID INT PRIMARY KEY,
+                OrderID INT NOT NULL,
+                ProductID INT NOT NULL,
+                Quantity INT NOT NULL,
+                Price DECIMAL(10, 2) NOT NULL,
+                FOREIGN KEY (OrderID) REFERENCES {schema_name}."Order"(OrderID),
+                FOREIGN KEY (ProductID) REFERENCES {schema_name}.Product(ProductID)
+            );
+        '''
+    ]
         
 
     # Execute SQL commands to create table

@@ -9,6 +9,8 @@ sources:
       - name: orderitem
       - name: product
       - name: customer
+      - name: category
+      - name: city
 
 models:
   - name: denormalized_table
@@ -19,4 +21,4 @@ models:
         tests:
           - unique
           - not_null
-      # Add other columns and tests as needed
+  

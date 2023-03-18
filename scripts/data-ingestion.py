@@ -7,7 +7,7 @@ current_dir = os.getcwd()
 config_file_path = os.path.join(current_dir, "config", "config.ini")
 
 config = configparser.ConfigParser()
-config.read(config_file_path)
+config.read("/Users/gomes/Desktop/Projects/Data Engineer/1-Project/scripts/config/config.ini")
 
 
 # AWS DMS credentials 

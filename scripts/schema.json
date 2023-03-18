@@ -1,0 +1,71 @@
+{
+    "rules": [
+      {
+        "rule-type": "selection",
+        "rule-id": "093349113",
+        "rule-name": "093349113",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%Order"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "093329323",
+        "rule-name": "093329323",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%customer"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "093307317",
+        "rule-name": "093307317",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%orderitem"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "093256098",
+        "rule-name": "093256098",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%product"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "093256099",
+        "rule-name": "093256099",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%category"
+        },
+        "rule-action": "include",
+        "filters": []
+      },
+      {
+        "rule-type": "selection",
+        "rule-id": "093256100",
+        "rule-name": "093256100",
+        "object-locator": {
+          "schema-name": "%public",
+          "table-name": "%city"
+        },
+        "rule-action": "include",
+        "filters": []
+      }
+    ]
+  }
+

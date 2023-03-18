@@ -5,7 +5,7 @@ from airflow.sensors.time_delta import TimeDeltaSensor
 
 
 default_args = {
-    "owner": "airflow",
+    "owner": "natuzzi",
     "depends_on_past": False,
     "start_date": datetime(2022, 1, 1),
     "email_on_failure": False,
@@ -35,7 +35,7 @@ data_ingestion_task = BashOperator(
 )
 
 wait_data_ingestion_task = TimeDeltaSensor(
-    task_id="wait_1_min",
+    task_id="wait_1_min_data_ingestion",
     delta=timedelta(minutes=1),
     dag=dag,
 )
@@ -47,8 +47,8 @@ gluejob_task = BashOperator(
 )
 
 wait_glue_job_task = TimeDeltaSensor(
-    task_id="wait_1_min",
-    delta=timedelta(minutes=1),
+    task_id="wait_1_min_glue_job",
+    delta=timedelta(minutes=2),
     dag=dag,
 )
 

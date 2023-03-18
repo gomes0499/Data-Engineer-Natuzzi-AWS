@@ -4,7 +4,7 @@ import os
 import configparser
 
 config = configparser.ConfigParser()
-config.read("config/config.ini")
+config.read("/Users/gomes/Desktop/Projects/Data Engineer/1-Project/scripts/config/config.ini")
 
 # Set credentials for AWS Glue
 aws_access_key_id = config.get("aws_creds", "aws_access_key_id")
