@@ -19,7 +19,7 @@ This project is a study case of data engineering for Natuzzi, a furniture compan
 ### Pipeline Diagram
 ![alt text](https://github.com/makima0499/1.Data-Engineer/blob/main/1.DataPipeline.png)
 
-### Data Engineer Tools
+### Tools
 * Python
 * Airflow
 * Terraform
