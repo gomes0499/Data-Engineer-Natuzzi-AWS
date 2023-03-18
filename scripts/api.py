@@ -6,9 +6,6 @@ import configparser
 from datetime import timedelta, datetime
 
 # Get the full path to the config.ini file
-current_dir = os.getcwd()
-config_file_path = os.path.join(current_dir, "config", "config.ini")
-
 config = configparser.ConfigParser()
 config.read("/Users/gomes/Desktop/Projects/Data Engineer/1-Project/scripts/config/config.ini")
 
