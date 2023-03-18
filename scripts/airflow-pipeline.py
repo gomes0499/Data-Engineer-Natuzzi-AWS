@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from airflow.sensors.time_delta import TimeDeltaSensor
+
 
 default_args = {
-    "owner": "airflow",
+    "owner": "natuzzi",
     "depends_on_past": False,
     "start_date": datetime(2022, 1, 1),
     "email_on_failure": False,
@@ -13,7 +15,7 @@ default_args = {
 }
 
 dag = DAG(
-    "my_pipeline_dag",
+    "data_pipeline_dag",
     default_args=default_args,
     description="A simple pipeline DAG",
     schedule_interval=timedelta(days=1),
@@ -32,9 +34,21 @@ data_ingestion_task = BashOperator(
     dag=dag,
 )
 
+wait_data_ingestion_task = TimeDeltaSensor(
+    task_id="wait_1_min_data_ingestion",
+    delta=timedelta(minutes=1),
+    dag=dag,
+)
+
 gluejob_task = BashOperator(
     task_id="gluejob",
     bash_command="python3 /Users/gomes/Desktop/Projects/Data\ Engineer/1-Project/scripts/gluejob.py",
+    dag=dag,
+)
+
+wait_glue_job_task = TimeDeltaSensor(
+    task_id="wait_1_min_glue_job",
+    delta=timedelta(minutes=2),
     dag=dag,
 )
 
@@ -56,4 +70,4 @@ redshift_to_s3_task = BashOperator(
     dag=dag,
 )
 
-api_task >> data_ingestion_task >> gluejob_task  >> redshift_task >> dbt_run_task >> redshift_to_s3_task
+api_task >> data_ingestion_task >> wait_data_ingestion_task >> gluejob_task  >> wait_glue_job_task >> redshift_task >> dbt_run_task >> redshift_to_s3_task

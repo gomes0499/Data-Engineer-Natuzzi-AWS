@@ -7,4 +7,5 @@ resource "aws_db_instance" "wu1_rds" {
   username             = "wuuserrds"
   password             = "Wu1passrds"
   skip_final_snapshot  = true
+  publicly_accessible  = true 
 }

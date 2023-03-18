@@ -6,16 +6,34 @@ def main():
         .appName("CSV to Parquet Converter") \
         .getOrCreate()
 
-    table_names = ["customer", "Order", "orderitem", "product"]
+    table_names = ["category", "city", "customer", "product", "Order", "orderitem"]
     parquet_path = "s3://wu1process/parquet/"
 
     schemas = {
+        "category": StructType([
+            StructField("CategoryID", IntegerType(), True),
+            StructField("CategoryName", StringType(), True)
+        ]),
+        "city": StructType([
+            StructField("CityID", IntegerType(), True),
+            StructField("CityName", StringType(), True),
+            StructField("State", StringType(), True)
+        ]),
         "customer": StructType([
             StructField("CustomerID", IntegerType(), True),
+            StructField("CityID", IntegerType(), True),
             StructField("FirstName", StringType(), True),
             StructField("LastName", StringType(), True),
             StructField("Email", StringType(), True),
             StructField("Phone", StringType(), True)
+        ]),
+        "product": StructType([
+            StructField("ProductID", IntegerType(), True),
+            StructField("CategoryID", IntegerType(), True),
+            StructField("ProductName", StringType(), True),
+            StructField("ProductDescription", StringType(), True),
+            StructField("ProductPrice", DecimalType(10, 2), True),
+            StructField("ProductInventory", IntegerType(), True)
         ]),
         "Order": StructType([
             StructField("OrderID", IntegerType(), True),
@@ -29,13 +47,6 @@ def main():
             StructField("ProductID", IntegerType(), True),
             StructField("Quantity", IntegerType(), True),
             StructField("Price", DecimalType(10, 2), True)
-        ]),
-        "product": StructType([
-            StructField("ProductID", IntegerType(), True),
-            StructField("ProductName", StringType(), True),
-            StructField("ProductDescription", StringType(), True),
-            StructField("ProductPrice", DecimalType(10, 2), True),
-            StructField("ProductInventory", IntegerType(), True)
         ])
     }
 

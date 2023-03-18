@@ -11,6 +11,16 @@ products AS (
 customers AS (
     SELECT *
     FROM {{ source('public', 'customer') }}
+),
+
+categories AS (
+    SELECT *
+    FROM {{ source('public', 'category') }}
+),
+
+cities AS (
+    SELECT *
+    FROM {{ source('public', 'city') }}
 )
 
 SELECT
@@ -20,13 +30,18 @@ SELECT
     c.LastName,
     c.Email,
     c.Phone,
+    ci.CityName,
+    ci.State,
     o.OrderDate,
     o.TotalAmount,
     p.ProductID,
+    cat.CategoryName,
     p.ProductName,
     p.ProductDescription,
     p.ProductPrice,
     p.ProductInventory
 FROM orders o
 JOIN customers c ON o.CustomerID = c.CustomerID
-JOIN products p ON 1=1  -- This line is joining products without any specific condition
+JOIN cities ci ON c.CityID = ci.CityID
+JOIN products p ON 1=1
+JOIN categories cat ON p.CategoryID = cat.CategoryID

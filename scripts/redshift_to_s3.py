@@ -1,6 +1,27 @@
 import psycopg2
+import configparser
+import os
 
-def export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password, redshift_db, s3_path, aws_access_key, aws_secret_key):
+# Get the full path to the config.ini file
+current_dir = os.getcwd()
+config_file_path = os.path.join(current_dir, "config", "config.ini")
+
+config = configparser.ConfigParser()
+config.read("/Users/gomes/Desktop/Projects/Data Engineer/1-Project/scripts/config/config.ini")
+
+
+# Replace these variables with your Redshift and S3 credentials
+redshift_host = config.get("redshift", "host")
+redshift_port = config.getint("redshift", "port")
+redshift_user = config.get("redshift", "user")
+redshift_password = config.get("redshift", "password")
+redshift_db = config.get("redshift", "dbname")
+s3_path = "s3://wu1curated/parquet/"
+aws_access_key = config.get("aws_creds", "aws_access_key_id")
+aws_secret_key = config.get("aws_creds", "aws_secret_access_key")
+iam_role = config.get("redshift", "iam_role")
+
+def export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password, redshift_db, s3_path, aws_access_key, aws_secret_key, iam_role):
     conn = psycopg2.connect(
         host=redshift_host,
         port=redshift_port,
@@ -15,9 +36,9 @@ def export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password,
     query = """
     UNLOAD ('SELECT * FROM "dev"."public"."denormalized_table";')
     TO '{}'
-    IAM_ROLE 'arn:aws:iam::222498481656:role/service-role/AmazonRedshift-CommandsAccessRole-20230315T175615'
+    IAM_ROLE '{}'
     FORMAT PARQUET;
-    """.format(s3_path)
+    """.format(s3_path, iam_role)
 
     try:
         cursor.execute(query)
@@ -29,14 +50,5 @@ def export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password,
         cursor.close()
         conn.close()
 
-# Replace these variables with your Redshift and S3 credentials
-redshift_host = "redshift-cluster-1.cem1k8vpfcmb.us-east-1.redshift.amazonaws.com"
-redshift_port = "5439"
-redshift_user = "wu1userredshift"
-redshift_password = "Wu1passredshift"
-redshift_db = "dev"
-s3_path = "s3://wu1curated/parquet/"
-aws_access_key = "AKIATHTPRMX4PSW55A6O"
-aws_secret_key = "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"
 
-export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password, redshift_db, s3_path, aws_access_key, aws_secret_key)
+export_to_s3(redshift_host, redshift_port, redshift_user, redshift_password, redshift_db, s3_path, aws_access_key, aws_secret_key, iam_role)
