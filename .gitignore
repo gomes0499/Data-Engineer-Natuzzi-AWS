@@ -3,3 +3,5 @@
 config
 logs
 terraform.tfstate
+dummy-data.py
+1-Project-Agile-Development.pdf
