@@ -21,6 +21,7 @@ This project is a study case of data engineering for Natuzzi, a furniture compan
 
 ### Tools
 * Python
+* Jupyter 
 * Airflow
 * Terraform
 * Github Actions
